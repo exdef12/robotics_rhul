@@ -7,6 +7,7 @@ public class Driver {
 	
 	static DifferentialPilot diffPilot = new DifferentialPilot(30, 115, Motor.A, Motor.C);
 	static LightSensor liSen = new LightSensor(SensorPort.S1, true);
+	static SoundSensor soSen = new SoundSensor(SensorPort.S2, true);
 	static int[][] mineField = new int[5][10];
 	static Arbitrator arbitrator;
 	static int counter = 0;
@@ -39,8 +40,9 @@ public class Driver {
 		Behavior endOfField= new EndOfField();
 		Behavior foundMine = new FoundMine();
 		Behavior exit = new Exit();
+		Behavior kill = new Kill();
 		
-		Behavior[] behaviours = {travelForward, turnAround, foundMine, endOfField, exit};
+		Behavior[] behaviours = {travelForward, turnAround, foundMine, endOfField, kill, exit};
 		arbitrator = new Arbitrator(behaviours);
 		
 		diffPilot.setTravelSpeed(360);
