@@ -6,7 +6,7 @@ public class DrawGrid implements Behavior {
 	@Override
 	public boolean takeControl() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -18,23 +18,23 @@ public class DrawGrid implements Behavior {
 		
 		//draws the width lines of the grid, passes required turning angle as argument 
 		firstWidthLine();
-		widthLines(-90);
-		widthLines(90);
-		widthLines(-90);
-		widthLines(90);
+		widthLines(-130);
+		widthLines(130);
+		widthLines(-130);
+		widthLines(130);
 		//rotates robot so its in position for drawing verticle lines  
 		penUp();
-		Driver.diffPilot.rotate(90);
+		Driver.diffPilot.rotate(130);
 		Driver.diffPilot.travel(10);
-		Driver.diffPilot.rotate(90);
+		Driver.diffPilot.rotate(130);
 		penDown();
 		
 		//draws all of the verticle lines of the grid. passes required turning angle as argument
-		VerticleLine(90);
-		VerticleLine(-90);
-		VerticleLine(90);
-		VerticleLine(-90);
-		VerticleLine(90);
+		VerticleLine(130);
+		VerticleLine(-130);
+		VerticleLine(130);
+		VerticleLine(-130);
+		VerticleLine(130);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class DrawGrid implements Behavior {
 		//turnValue used for how much the robot needs to turn
 		Driver.diffPilot.travel(10);
 		penUp();
-		Driver.diffPilot.rotate(90);
+		Driver.diffPilot.rotate(130);
 		penDown();
 		Driver.diffPilot.travel(100);
 	}
@@ -83,11 +83,11 @@ public class DrawGrid implements Behavior {
 	{
 		Driver.diffPilot.travel(50);
 		penUp();
-		Driver.diffPilot.rotate(90);
+		Driver.diffPilot.rotate(130);
 		penDown();
 		Driver.diffPilot.travel(100);
 		penUp();
-		Driver.diffPilot.rotate(90);	
+		Driver.diffPilot.rotate(130);	
 		penDown();
 	}
 	
