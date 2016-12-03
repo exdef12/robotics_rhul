@@ -3,6 +3,8 @@ import lejos.nxt.Button;
 import lejos.nxt.Sound;
 
 
+System.out.print("test");
+
 public class Exit implements Behavior {
 
 	
