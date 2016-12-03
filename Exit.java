@@ -7,6 +7,8 @@ public class Exit implements Behavior {
 
 	
 	public boolean takeControl() {
+		
+		//takes control when the orange button is pressed down
 		if (Button.ENTER.isDown())
 		{
 			return true;
