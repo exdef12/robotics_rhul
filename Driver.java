@@ -5,15 +5,25 @@ import lejos.robotics.subsumption.Behavior;
 
 public class Driver {
 	
+	//passes the wheel measurements to a differential pilot which will perform any of the robot's movements
 	static DifferentialPilot diffPilot = new DifferentialPilot(30, 115, Motor.A, Motor.C);
+	
+	//declares a light sensor and sound sensor for use throughout all of the behaviour classes
 	static LightSensor liSen = new LightSensor(SensorPort.S1, true);
 	static SoundSensor souSen = new SoundSensor(SensorPort.S2);
+	
+	//the size of the paper grid used as the mine field
 	static int[][] mineField = new int[5][10];
-	static Arbitrator arbitrator;
-	static int counter = 0;
-	static int counter2 = 0;
-	static boolean stageOne = true;
-	static boolean stageTwo = false;
+	
+	//these counters are used by the robot to remember its grid position as it traverses the whole grid
+	static int columnCounter = 0;
+	static int rowCounter = 0;
+	
+	//these are global variables that determine which stage of the program the robot should do next
+	static boolean plotMines = false;
+	static boolean moveToPlot = false;
+	static boolean drawNewGrid = false;
+	static boolean mineDetection = true;
 
 	public static void main(String[] args) {
 		
@@ -38,9 +48,8 @@ public class Driver {
 		} catch(Exception e){}
 		
 		LCD.clear();
-		LCD.drawInt(Driver.counter2, 4, 2);
-		LCD.refresh();
-		
+
+		//creates behaviour objects for all of the behaviour classes
 		Behavior travelForward = new TravelForward();
 		Behavior turnAround = new TurnAround();
 		Behavior endOfField= new EndOfField();
@@ -48,16 +57,21 @@ public class Driver {
 		Behavior exit = new Exit();
 		Behavior plotMines = new PlotMines();
 		Behavior kill = new Kill();
-		//Behavior drawGrid = new DrawGrid();
+		Behavior moveToPlot = new MoveToPlot();
+		Behavior newGrid = new NewGrid();
 		
-		Behavior[] behaviours = {travelForward, turnAround, foundMine, endOfField, kill, plotMines, exit};
-		//Behavior[] behaviours = {drawGrid};
-		arbitrator = new Arbitrator(behaviours);
+		//puts all the behaviour objects into an array
+		Behavior[] behaviours = {travelForward, turnAround, foundMine, endOfField, kill, moveToPlot, newGrid, plotMines, exit};
+		//passes the behaviour array to an arbitrator
+		Arbitrator arbitrator = new Arbitrator(behaviours);
 		
-		diffPilot.setTravelSpeed(360);
+		//sets the robots travelling speed
 		diffPilot.setRotateSpeed(360);
+		
+		//sets the pen arm's turning speed.
 		Motor.B.setSpeed(40);
 		
+		//starts the arbitrator, which cycles through every behaviour, effectively running the program.
 		arbitrator.start();
 
 		
