@@ -5,24 +5,26 @@ public class TravelForward implements Behavior {
 
 	
 	public boolean takeControl() {
- 
+		
+		//always returns true to travel forward, but this behaviour has the lowest priority so it can be interrupted by other behaviours
 		return true;
 		
 	}
 	
 	public void action() {
 		
-		//drives forward, changing counting value depending on direction
-		LCD.drawInt(Driver.counter, 2, 2);
+		//drives forward to the next grid cell, changing the column counter value depending on which direction it is travelling
+		LCD.drawInt(Driver.columnCounter, 2, 2);
 		LCD.refresh();
 	
+		Driver.mineDetection = true;
 		Driver.diffPilot.travel(35);
 		
-		if(Driver.counter2 % 2 == 0) {
-			Driver.counter++;
+		if(Driver.rowCounter % 2 == 0) {
+			Driver.columnCounter++;
 		}
-		else if(Driver.counter2 % 2 == 1) {
-			Driver.counter--;
+		else if(Driver.rowCounter % 2 == 1) {
+			Driver.columnCounter--;
 		}
 		
 	}

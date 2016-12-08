@@ -1,34 +1,58 @@
+import lejos.nxt.Button;
+import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.robotics.subsumption.Behavior;
 
 public class NewGrid implements Behavior {
-	static int turnAngle = 126;
-	static int negTurnAngle = -126;
+	
+	static int turnAngle = 127;
+	static int negTurnAngle = -127;
 	
 	@Override
 	public boolean takeControl() {
-		return true;
+		
+		//takes control when the global variable 'drawNewGrid' becomes true
+		if(Driver.drawNewGrid) {
+			
+			return true;
+		}
+		return false;
 
 	}
 
 	@Override
 	public void action() {
+		
+		//waits for someone to press the orange button, indicating the robot is ready in position to begin drawing
+		LCD.clear();
+		LCD.drawString("Waiting...", 2, 2);
+		LCD.refresh();
+		
+		Button.ENTER.waitForPressAndRelease();
+		Motor.B.rotate(85);
+		//calls the outline method (found below in this class) twice, to draw a full rectangle.
 		outLine();
 		outLine();
-		System.exit(0);
+		
+		Motor.B.rotate(-90);
+		
+		Driver.plotMines = true;
+		Driver.drawNewGrid = false;
+		
+		
 	}
 
 	@Override
-	public void suppress() {
+	public void suppress() 
+	{
 		Driver.diffPilot.stop();
 	}
 
 	public void outLine()
 	{
+		//this method draws one line width-ways and one line length ways
 		Driver.diffPilot.travel(200);
-		//penUp();
 		Motor.B.rotate(-20);
-		//move forwards
 		moveForward();
 		Driver.diffPilot.rotate(turnAngle);
 		moveBack();
@@ -43,17 +67,18 @@ public class NewGrid implements Behavior {
 	
 	public void penUp()
 	{
+		//this method pulls the pen arm up
 		Motor.B.rotate(-20);
 	}
 	
 	public void penDown()
 	{
-		Motor.B.rotate(25);
+		//this method puts the pen arm down
+		Motor.B.rotate(21);
 	}
 	
-	public void moveBack()
+	public void moveBack() 
 	{
-		//VALUE NOT FINAL
 		Driver.diffPilot.travel(-150);
 		
 	}

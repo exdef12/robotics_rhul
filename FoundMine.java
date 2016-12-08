@@ -1,3 +1,4 @@
+import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 import lejos.robotics.subsumption.Behavior;
 
@@ -6,10 +7,10 @@ public class FoundMine implements Behavior {
 	@Override
 	public boolean takeControl() {
 		
-		//when light sensor detects dark light
+		//take control when the light sensor reads a value below 10, indicating its found a black mine.
 		int lV = Driver.liSen.readValue();
 		
-		if (lV < 10)
+		if (lV < 10 && Driver.mineDetection)
 		{
 		  return true;
 		}
@@ -19,17 +20,28 @@ public class FoundMine implements Behavior {
 	@Override
 	public void action() {
 		
-		//plots mine location in array using current counter values
-        Driver.mineField[Driver.counter2][Driver.counter] = 1;
+		//plots mine location in the grid array using current row and column counter values
+       
         Sound.playTone(1000, 250);
         
+        
+        if(Driver.rowCounter % 2 == 0) {
+        	
+			Driver.columnCounter++;
+			Driver.mineField[Driver.rowCounter][Driver.columnCounter-1] = 1;
+			LCD.drawString("("+Driver.rowCounter+","+(Driver.columnCounter-1)+")", 2, 3);
+		    LCD.refresh();
+		}
+		else if(Driver.rowCounter % 2 == 1) {
+			
+			Driver.columnCounter--;
+			Driver.mineField[Driver.rowCounter][Driver.columnCounter+1] = 1;
+			LCD.drawString("("+Driver.rowCounter+","+(Driver.columnCounter+1)+")", 2, 3);
+		    LCD.refresh();
+		}
+        
+        //moves the robot forward to the next grid cell
         Driver.diffPilot.travel(35);
-        if(Driver.counter2 % 2 == 0) {
-			Driver.counter++;
-		}
-		else if(Driver.counter2 % 2 == 1) {
-			Driver.counter--;
-		}
 	}
 
 	@Override

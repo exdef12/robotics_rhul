@@ -4,8 +4,8 @@ public class EndOfField implements Behavior {
 
 	public boolean takeControl() {
 		
-		//when robot has turned 5 times
-		if(Driver.counter2 == 5) {
+		//takes control when robot has turned 5 times whilst scanning the mine field
+		if(Driver.rowCounter == 5) {
 			return true;
 		}
 		return false;
@@ -13,9 +13,11 @@ public class EndOfField implements Behavior {
 
 	public void action() {
 		
+		//adjusts the global variables to make moveToPlot true, allowing the MoveToPlot behaviour to take control
 		Driver.diffPilot.stop();
-		Driver.stageOne = false;
-		Driver.stageTwo = true;
+		Driver.mineDetection = false;
+		Driver.moveToPlot = true;
+
 	}
 
 	public void suppress() {
